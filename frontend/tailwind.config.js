@@ -1,0 +1,1 @@
+export default { content: ['./index.html', './src/**/*.{js,jsx}'], theme: { extend: { colors: { leaf: { 50: '#f1f8f1', 100: '#dcefdc', 500: '#3f9142', 600: '#2f7a34', 700: '#25622a', 900: '#143518' } } } }, plugins: [] };

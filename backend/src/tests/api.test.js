@@ -236,3 +236,24 @@ describe('admin & AI proxy', () => {
     expect((await request(app).post('/api/ai/price-prediction').set(b.auth).send({ crop: 'Tomato' })).status).toBe(403);
   });
 });
+
+describe('reference data (centers, export guides)', () => {
+  it('admin manages centers; public sees verified only', async () => {
+    const a = await admin(); const f = await signup('farmer');
+    const body = { name: 'Test APMC Yard', latitude: 12.3, longitude: 76.6, sourceUrl: 'https://example.com/s', state: 'Karnataka' };
+    expect((await request(app).post('/api/collection-centers').set(f.auth).send(body)).status).toBe(403);
+    const c = await request(app).post('/api/collection-centers').set(a.auth).send(body); expect(c.status).toBe(201);
+    expect((await request(app).get('/api/collection-centers')).body.items).toHaveLength(0);
+    await request(app).post(`/api/collection-centers/${c.body.item._id}/verify`).set(a.auth);
+    expect((await request(app).get('/api/collection-centers')).body.items).toHaveLength(1);
+    expect((await request(app).post('/api/collection-centers').set(a.auth).send({ ...body, latitude: 999 })).status).toBe(400);
+  });
+  it('export guides require a source URL and are admin-managed', async () => {
+    const a = await admin(); const f = await signup('farmer');
+    const g = { topic: 'Customs', title: 'Customs overview', content: 'General overview text.', sourceName: 'CBIC', sourceUrl: 'https://www.cbic.gov.in' };
+    expect((await request(app).post('/api/export-guides').set(f.auth).send(g)).status).toBe(403);
+    expect((await request(app).post('/api/export-guides').set(a.auth).send({ ...g, sourceUrl: undefined })).status).toBe(400);
+    expect((await request(app).post('/api/export-guides').set(a.auth).send(g)).status).toBe(201);
+    expect((await request(app).get('/api/export-guides')).body.items).toHaveLength(1);
+  });
+});

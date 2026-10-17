@@ -1,0 +1,10 @@
+export const Spinner = ({ label = 'Loading...' }) => <div role="status" className="flex items-center gap-2 p-6 text-stone-500"><span className="h-4 w-4 animate-spin rounded-full border-2 border-leaf-500 border-t-transparent" />{label}</div>;
+export const ErrorBox = ({ message, onRetry }) => <div role="alert" className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">{message}{onRetry && <button className="ml-3 underline" onClick={onRetry}>Retry</button>}</div>;
+export const Empty = ({ title, hint, children }) => <div className="rounded-xl border border-dashed border-stone-300 p-8 text-center"><p className="font-semibold text-stone-700">{title}</p>{hint && <p className="mt-1 text-sm text-stone-500">{hint}</p>}{children}</div>;
+export const PageHeader = ({ title, subtitle, children }) => <div className="mb-6 flex flex-wrap items-end justify-between gap-3"><div><h1 className="text-2xl font-bold text-leaf-900">{title}</h1>{subtitle && <p className="text-sm text-stone-500">{subtitle}</p>}</div>{children}</div>;
+export function Field({ label, error, id, children, hint }) {
+  return <div className="mb-3"><label htmlFor={id} className="mb-1 block text-sm font-medium text-stone-700">{label}</label>{children}{hint && <p className="mt-1 text-xs text-stone-500">{hint}</p>}{error && <p role="alert" className="mt-1 text-xs text-red-600">{error}</p>}</div>;
+}
+const COLORS = { Pending: 'bg-amber-100 text-amber-800', Accepted: 'bg-blue-100 text-blue-800', Rejected: 'bg-red-100 text-red-800', Confirmed: 'bg-indigo-100 text-indigo-800', 'Ready for Collection': 'bg-purple-100 text-purple-800', Completed: 'bg-green-100 text-green-800', Cancelled: 'bg-stone-200 text-stone-700', verified: 'bg-green-100 text-green-800', unverified: 'bg-amber-100 text-amber-800' };
+export const Badge = ({ children }) => <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${COLORS[children] || 'bg-stone-100 text-stone-700'}`}>{children}</span>;
+export const Notice = ({ children }) => <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">{children}</div>;

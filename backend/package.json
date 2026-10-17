@@ -6,8 +6,9 @@
     "dev": "node --watch src/server.js",
     "start": "node src/server.js",
     "test": "vitest run",
-    "lint": "node --check src/app.js",
-    "seed:admin": "node src/scripts-seed-admin.js"
+    "lint": "node scripts/lint.mjs",
+    "seed:admin": "node src/scripts-seed-admin.js",
+    "seed:guides": "node src/scripts-seed-guides.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
