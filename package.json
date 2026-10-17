@@ -1,0 +1,11 @@
+{
+  "name": "agri-global-marketplace",
+  "private": true,
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "test:backend": "npm --prefix backend test",
+    "test:ai": "cd ai-service && python -m pytest -q",
+    "test:all": "npm run test:backend && npm run test:ai",
+    "lint:backend": "npm --prefix backend run lint"
+  }
+}
