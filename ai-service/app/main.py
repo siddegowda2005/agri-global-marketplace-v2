@@ -1,10 +1,20 @@
+import logging
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from app.schemas.models import PriceRequest, CropRequest
 from app.services.registry import Registry, ModelUnavailable, BadInput
 
 def create_app(model_dir=None) -> FastAPI:
-    app = FastAPI(title="Agri AI Service", version="1.0.0")
     reg = Registry(model_dir)
+
+    @asynccontextmanager
+    async def lifespan(_app):
+        st = reg.status()  # load models at startup so problems show in the console immediately
+        for name, info in st.items():
+            logging.getLogger("uvicorn.error").info("%s: %s", name, "loaded " + info["version"] if info["loaded"] else "NOT TRAINED (see README)")
+        yield
+
+    app = FastAPI(title="Agri AI Service", version="1.1.0", lifespan=lifespan)
 
     @app.get("/health")
     def health(): return {"status": "ok", "models": reg.status()}

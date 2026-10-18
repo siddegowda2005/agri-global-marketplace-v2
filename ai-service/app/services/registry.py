@@ -39,6 +39,12 @@ class Registry:
         price = float(model.predict(row)[0])
         return {"predicted_price": round(price, 2), "price_unit": meta["price_unit"], "prediction_date": str(d.date()),
                 "model_version": meta["model_version"], "metrics_on_holdout": meta["metrics_on_holdout"], "data_range": meta["data_range"],
+                "training_rows": meta["rows"], "coverage": {"commodities": len(meta["commodities"]), "states": len(meta["states"]), "markets": len(meta["markets"]), "days": meta.get("coverage_days")},
+                "warnings": meta.get("warnings", []),
+                "limitations": ["Estimate from past mandi prices; it is not a live or guaranteed market price.",
+                                "Only crops, states and markets present in the training data are supported.",
+                                "Predictions far outside the training date range extrapolate poorly.",
+                                "Prices are modal mandi prices, not export or retail prices."],
                 "disclaimer": "Model estimate from historical data. Not a live market price."}
 
     def recommend_crop(self, values: dict, top_k=3):

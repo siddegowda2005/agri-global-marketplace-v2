@@ -46,6 +46,7 @@ def test_price_endpoint_valid(client):
     assert r.status_code == 200
     b = r.json(); assert b["predicted_price"] > 0 and b["model_version"] and b["price_unit"] and b["prediction_date"] == "2024-06-01"
     assert "Not a live market price" in b["disclaimer"]
+    assert b["coverage"]["commodities"] == 2 and b["training_rows"] > 0 and b["limitations"] and "warnings" in b
 
 def test_price_endpoint_invalid(client):
     assert client.post("/predict/price", json={"crop": "unobtainium"}).status_code == 422
@@ -75,3 +76,38 @@ def test_untrained_returns_503_not_fake_data(tmp_path):
 def test_crop_dataset_validation(tmp_path):
     p = tmp_path / "x.csv"; pd.DataFrame({"N": [1]}).to_csv(p, index=False)
     with pytest.raises(ValueError): train_crop.train(p, tmp_path)
+
+
+def test_dedupes_and_normalises_names(tmp_path):
+    rows = [{"Commodity": " Tomato  ", "State": "KARNATAKA", "Market": "Mysuru", "Arrival_Date": "01-01-2023", "Modal_Price": p} for p in (1000, 1200)]
+    rows += [{"Commodity": "tomato", "State": "karnataka", "Market": "mysuru", "Arrival_Date": "02-01-2023", "Modal_Price": 1100}, {"Commodity": "bad", "State": "x", "Market": "y", "Arrival_Date": "03-01-2023", "Modal_Price": -5}]
+    p = tmp_path / "d.csv"; pd.DataFrame(rows).to_csv(p, index=False)
+    df = train_price.load_dataset(p)
+    assert len(df) == 2 and set(df.commodity) == {"tomato"} and df.iloc[0].modal_price == 1100.0
+
+def test_short_history_triggers_warning(price_csv, tmp_path):
+    short = pd.read_csv(price_csv).head(400); p = tmp_path / "s.csv"; short.to_csv(p, index=False)
+    assert any("spans only" in w for w in train_price.train(p, tmp_path / "m", min_rows=100)["warnings"])
+
+def test_fetch_parser_skips_bad_rows():
+    import fetch_price_data as fp
+    rows = fp.parse_records({"records": [{"commodity": "Tomato", "state": "Karnataka", "market": "Mysuru", "arrival_date": "01/10/2026", "modal_price": "1500"},
+                                         {"commodity": "Tomato", "arrival_date": "01/10/2026", "modal_price": "NA"}, {"commodity": "Onion", "arrival_date": "01/10/2026", "modal_price": "0"}]})
+    assert len(rows) == 1 and rows[0]["Modal_Price"] == 1500.0
+
+def test_merge_csv_dedupes(tmp_path):
+    import fetch_price_data as fp
+    r = {"Commodity": "Tomato", "State": "K", "Market": "M", "Arrival_Date": "01/10/2026", "Modal_Price": 10.0}
+    assert fp.merge_csv(tmp_path / "a.csv", [r]) == 1 and fp.merge_csv(tmp_path / "a.csv", [r, {**r, "Arrival_Date": "02/10/2026"}]) == 2
+
+def test_prepare_crop_data_validation():
+    import prepare_crop_data as pc
+    rng = np.random.default_rng(3)
+    good = pd.DataFrame({"Nitrogen": rng.integers(0, 140, 200), "P": rng.integers(0, 140, 200), "K": rng.integers(0, 200, 200), "temperature": rng.uniform(10, 40, 200), "humidity": rng.uniform(20, 99, 200), "pH": rng.uniform(4, 9, 200), "rainfall": rng.uniform(20, 300, 200), "Crop": ["rice", "maize"] * 100})
+    df, rep = pc.clean(good); assert rep["classes"] == 2 and list(df.columns)[:3] == ["N", "P", "K"]
+    with pytest.raises(ValueError): pc.clean(good.drop(columns=["rainfall"]))
+    bad = good.copy(); bad["pH"] = 99
+    with pytest.raises(ValueError): pc.clean(bad)
+
+def test_lifespan_startup_loads_models(client):
+    assert client.get("/health").json()["models"]["price_model"]["loaded"] is True

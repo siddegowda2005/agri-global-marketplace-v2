@@ -16,3 +16,6 @@ Checks that DID run:
 
 Not covered: real-data model metrics, external exchange-rate API, public deployment, international accessibility, security review beyond code design (helmet, rate limiting, bcrypt, input validation, NoSQL operator stripping, upload filtering, role checks).
 Fill in real counts here after running `npm run verify`.
+
+## V2 additions
+New tests written, NOT executed (no network in build sandbox): backend/src/tests/v2.test.js (about 12 cases: evidence, duplicates, filters, buying-request lifecycle incl. expiry/staleness, enquiry workflow, AI proxy codes), frontend/src/tests/v2.test.jsx (about 16 cases), 6 new pytest cases. Executed: `node --check` on all backend files; Python helper logic (dedupe/normalise, API record parser, CSV merge, crop-data cleaner) on synthetic data. Everything else: NOT TESTED.

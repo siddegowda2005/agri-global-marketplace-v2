@@ -6,9 +6,9 @@ import { CURRENCIES } from '../utils/format.js';
 import { useApi } from '../hooks/useApi.js';
 const LINKS = {
   public: [['/', 'Home'], ['/marketplace', 'Marketplace'], ['/about', 'About'], ['/contact', 'Contact']],
-  farmer: [['/dashboard', 'Dashboard'], ['/marketplace', 'Marketplace'], ['/farmer/crops', 'My Crops'], ['/orders', 'Orders'], ['/ai/price', 'Price AI'], ['/ai/recommend', 'Crop AI'], ['/buyer-finder', 'Buyer Finder'], ['/exporters', 'Exporters'], ['/importers', 'Importers'], ['/export-guidance', 'Export Guide'], ['/collection-centers', 'Centers']],
+  farmer: [['/dashboard', 'Dashboard'], ['/marketplace', 'Marketplace'], ['/farmer/crops', 'My Crops'], ['/orders', 'Orders'], ['/ai/price', 'Price AI'], ['/ai/recommend', 'Crop AI'], ['/global-buyers', 'Global Buyers'], ['/enquiries', 'Enquiries'], ['/buyer-finder', 'Buyer Finder'], ['/exporters', 'Exporters'], ['/importers', 'Importers'], ['/export-guidance', 'Export Guide'], ['/collection-centers', 'Centers']],
   buyer: [['/dashboard', 'Dashboard'], ['/marketplace', 'Marketplace'], ['/cart', 'Cart'], ['/orders', 'Orders']],
-  admin: [['/dashboard', 'Admin'], ['/marketplace', 'Marketplace'], ['/importers', 'Importers'], ['/exporters', 'Exporters']],
+  admin: [['/dashboard', 'Admin'], ['/marketplace', 'Marketplace'], ['/global-buyers', 'Global Buyers'], ['/importers', 'Importers'], ['/exporters', 'Exporters']],
 };
 function Bell() {
   const { data } = useApi('/notifications');

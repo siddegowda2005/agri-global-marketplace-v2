@@ -1,0 +1,20 @@
+[
+  {
+    "_template": true,
+    "_comment": "Copy this object for each REAL company. Only include contact details that appear on the cited public page; omit any field you cannot confirm (the site shows 'Not publicly available'). Imported records are UNVERIFIED until an admin verifies them.",
+    "type": "international_importer",
+    "name": "REPLACE with the company's real name",
+    "country": "UAE",
+    "city": "REPLACE",
+    "buyerType": "importer",
+    "productsHandled": ["tomato"],
+    "productCategories": ["vegetables"],
+    "website": "https://REPLACE.example",
+    "contactPage": "https://REPLACE.example/contact",
+    "email": "only-if-published@REPLACE.example",
+    "phone": "only if published",
+    "address": "only if published",
+    "sourceUrl": "https://REPLACE.example/where-you-found-this",
+    "sources": [{ "url": "https://REPLACE.example/where-you-found-this", "label": "Official contact page" }]
+  }
+]

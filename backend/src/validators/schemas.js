@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { CATEGORIES } from '../models/Crop.js';
 import { objectId } from '../middleware/http.js';
+import { normCountry } from '../services/matching_extra.js';
 const CURRENCIES = ['INR', 'USD', 'AED', 'EUR', 'GBP', 'SAR', 'SGD'];
 const COUNTRIES = ['India', 'UAE', 'USA', 'UK', 'Saudi Arabia', 'Singapore'];
 export const registerSchema = z.object({
@@ -37,14 +38,30 @@ export const statusSchema = z.object({ status: z.enum(['Accepted', 'Rejected', '
 export const cartItemSchema = z.object({ cropId: objectId, quantity: z.coerce.number().positive().max(1e9) }).strict();
 export const checkoutSchema = z.object({ idempotencyKey: z.string().min(8).max(100), note: z.string().max(1000).optional() }).strict();
 const httpUrl = z.string().url().refine((u) => /^https?:\/\//i.test(u), 'Must be http(s)');
+const BUYER_TYPES = ['importer', 'wholesaler', 'distributor', 'retailer', 'processor', 'exporter', 'other'];
+const lowerList = z.array(z.string().trim().toLowerCase().min(1).max(60)).max(50).default([]);
 export const companySchema = z.object({
   type: z.enum(['international_importer', 'indian_exporter']), name: z.string().trim().min(2).max(200),
-  country: z.string().trim().min(2).max(60), state: z.string().trim().max(60).optional(), city: z.string().trim().max(60).optional(),
-  productsHandled: z.array(z.string().trim().toLowerCase().min(1).max(60)).max(50).default([]),
-  businessCategory: z.string().trim().max(100).optional(),
-  website: httpUrl.optional(), contactPage: httpUrl.optional(), sourceUrl: httpUrl,
-  email: z.string().email().optional(), phone: z.string().max(40).optional(), address: z.string().max(300).optional(),
+  country: z.string().trim().min(2).max(60).transform(normCountry), state: z.string().trim().max(60).optional(), city: z.string().trim().max(60).optional(),
+  buyerType: z.enum(BUYER_TYPES).default('importer'),
+  productsHandled: lowerList, productCategories: lowerList,
+  businessCategory: z.string().trim().max(100).optional(), minimumOrderQuantity: z.string().trim().max(100).optional(),
+  website: httpUrl.optional(), contactPage: httpUrl.optional(), logoUrl: httpUrl.optional(), sourceUrl: httpUrl,
+  sources: z.array(z.object({ url: httpUrl, label: z.string().max(100).optional(), checkedAt: z.coerce.date().optional() })).max(10).optional(),
+  email: z.string().email().optional(), phone: z.string().max(40).optional(), whatsapp: z.string().max(40).optional(), address: z.string().max(300).optional(),
+  lastCheckedAt: z.coerce.date().optional(),
 }).strict();
-export const enquirySchema = z.object({ companyId: objectId, cropName: z.string().trim().min(2).max(100), quantity: z.coerce.number().positive(), unit: z.enum(['kg', 'quintal', 'tonne']).default('kg'), location: z.string().trim().min(2).max(120) }).strict();
+export const evidenceSchema = z.object({ evidence: z.string().trim().min(10, 'Describe what you checked (min 10 characters)').max(1000) }).strict();
+export const rejectSchema = z.object({ reason: z.string().trim().min(5).max(500) }).strict();
+export const buyingRequestSchema = z.object({
+  company: objectId, crop: z.string().trim().min(2).max(60), quantity: z.coerce.number().positive().optional(), unit: z.string().trim().max(20).optional(),
+  quality: z.string().max(300).optional(), minimumOrderQuantity: z.string().max(100).optional(), deliveryDestination: z.string().max(200).optional(),
+  requestDate: z.coerce.date(), expiresAt: z.coerce.date().optional(), sourceUrl: httpUrl,
+}).strict();
+export const enquirySchema = z.object({
+  companyId: objectId, cropId: objectId.optional(), cropName: z.string().trim().min(2).max(100), quantity: z.coerce.number().positive(), unit: z.enum(['kg', 'quintal', 'tonne']).default('kg'),
+  location: z.string().trim().min(2).max(120), expectedPriceInr: z.coerce.number().min(0).max(1e8).optional(), grade: z.string().trim().max(30).optional(),
+  message: z.string().trim().max(2000).optional(), contactPreference: z.enum(['email', 'phone', 'whatsapp', 'any']).default('any'), submit: z.boolean().default(false),
+}).strict();
 export const aiPriceSchema = z.object({ crop: z.string().min(2).max(60), market: z.string().max(80).optional(), state: z.string().max(60).optional(), date: z.string().optional() });
 export const aiCropSchema = z.object({ N: z.coerce.number(), P: z.coerce.number(), K: z.coerce.number(), temperature: z.coerce.number(), humidity: z.coerce.number(), ph: z.coerce.number(), rainfall: z.coerce.number() });

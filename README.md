@@ -2,6 +2,8 @@
 Final-year B.E. AI&DS project. React + Vite + Tailwind | Express + MongoDB | FastAPI + scikit-learn.
 No payments, no shipping. See PROJECT_PROGRESS.md, REQUIREMENTS_CHECKLIST.md, SKIPPED_FEATURES.md, FINAL_TEST_REPORT.md.
 
+> V2: see docs/V2_UPGRADE.md for upgrade steps, AI training data steps and company import.
+
 ## Prerequisites
 Node 20+ (tested layout on 22), Python 3.10+, MongoDB 6+ running locally (or an Atlas URI).
 

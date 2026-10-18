@@ -42,10 +42,22 @@ async function forward(path, body, res) {
   try {
     const r = await aiFetch(`${env.aiUrl}${path}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: AbortSignal.timeout(10000) });
     const data = await r.json().catch(() => ({}));
-    return res.status(r.ok ? 200 : r.status === 503 ? 503 : 502).json(r.ok ? data : { message: data.detail || 'AI service error' });
-  } catch { return res.status(503).json({ message: 'AI service is currently unavailable' }); }
+    if (r.ok) return res.json(data);
+    const detail = typeof data.detail === 'string' ? data.detail : null;
+    if (r.status === 503) return res.status(503).json({ message: detail || 'AI model is not trained yet', code: 'MODEL_NOT_TRAINED' });
+    if (r.status === 422) return res.status(422).json({ message: detail || 'The AI service rejected this input', code: 'BAD_INPUT' });
+    return res.status(502).json({ message: 'AI service returned an unexpected error', code: 'AI_ERROR' });
+  } catch (err) {
+    if (process.env.NODE_ENV !== 'test') console.error(`AI service unreachable at ${env.aiUrl}: ${err.cause?.code || err.message}`);
+    return res.status(503).json({ message: 'AI service is currently unavailable (cannot be reached by the backend). Make sure it is running on the configured AI_SERVICE_URL.', code: 'AI_UNREACHABLE' });
+  }
 }
-ai.use(authenticate, requireRole('farmer'));
+ai.use(authenticate);
+ai.get('/status', asyncHandler(async (_req, res) => {
+  try { const r = await aiFetch(`${env.aiUrl}/health`, { signal: AbortSignal.timeout(5000) }); res.json({ reachable: true, ...(await r.json()) }); }
+  catch { res.json({ reachable: false, models: {} }); }
+}));
+ai.use(requireRole('farmer'));
 ai.post('/price-prediction', validate(aiPriceSchema), (req, res) => forward('/predict/price', req.body, res));
 ai.post('/crop-recommendation', validate(aiCropSchema), (req, res) => forward('/recommend/crop', req.body, res));
 

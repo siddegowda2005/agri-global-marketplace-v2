@@ -36,7 +36,10 @@ def load_dataset(path) -> pd.DataFrame:
     df["modal_price"] = pd.to_numeric(df["modal_price"], errors="coerce")
     df = df.dropna(subset=["date", "modal_price", "commodity"])
     df = df[df["modal_price"] > 0].copy()
-    for c in ("commodity", "state", "market"): df[c] = df[c].fillna("Unknown").astype(str).str.strip().str.lower()
+    for c in ("commodity", "state", "market"):
+        df[c] = df[c].fillna("Unknown").astype(str).str.lower().str.replace(r"\s+", " ", regex=True).str.strip()
+    # One row per commodity/state/market/day (varieties averaged): removes duplicates that would leak across the time split.
+    df = df.groupby(["commodity", "state", "market", "date"], as_index=False)["modal_price"].mean()
     df["month"], df["year"] = df["date"].dt.month, df["date"].dt.year
     return df.sort_values("date").reset_index(drop=True)
 
@@ -50,6 +53,10 @@ def train(csv_path, out_dir, test_fraction=0.2, min_rows=200):
     cut = int(len(df) * (1 - test_fraction))
     train_df, test_df = df.iloc[:cut], df.iloc[cut:]
     if test_df.empty or train_df.empty: raise ValueError("Not enough data for a time-based split")
+    span_days = int((df.date.max() - df.date.min()).days)
+    warnings = []
+    if span_days < 365: warnings.append(f"Training data spans only {span_days} days; seasonal patterns over a full year cannot be learned.")
+    if df.commodity.nunique() > 0 and len(df) / df.commodity.nunique() < 100: warnings.append("Few records per commodity; predictions for rare crops are unreliable.")
     pipe = build_pipeline().fit(train_df[CAT + NUM], train_df["modal_price"])
     pred = pipe.predict(test_df[CAT + NUM])
     base = test_df["commodity"].map(train_df.groupby("commodity")["modal_price"].mean()).fillna(train_df["modal_price"].mean())
@@ -63,7 +70,7 @@ def train(csv_path, out_dir, test_fraction=0.2, min_rows=200):
             "test_range": [str(test_df.date.min().date()), str(test_df.date.max().date())],
             "data_range": [str(df.date.min().date()), str(df.date.max().date())],
             "validation": "time-based holdout (latest 20% of dates)", "metrics_on_holdout": metrics,
-            "price_unit": "INR per quintal (as in source data)", "commodities": sorted(df.commodity.unique().tolist()),
+            "price_unit": "INR per quintal (as in source data)", "coverage_days": span_days, "warnings": warnings, "commodities": sorted(df.commodity.unique().tolist()),
             "states": sorted(df.state.unique().tolist()), "markets": sorted(df.market.unique().tolist())}
     save_artifact(final, meta, Path(out_dir), "price_model")
     return meta

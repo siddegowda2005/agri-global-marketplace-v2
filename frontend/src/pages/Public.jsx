@@ -9,22 +9,27 @@ const FEATURES = [
   ['📦', 'Export guidance', 'Educational pointers to official sources such as APEDA and DGFT.'],
   ['📍', 'Collection centers', 'Verified collection and export facilities on an OpenStreetMap map.'],
 ];
+const STEPS = [['1', 'List your crop', 'Add quantity, price, location and photos in minutes.'], ['2', 'Check the market', 'Use price and crop-recommendation models trained on real data.'], ['3', 'Reach buyers', 'Search verified international importers and verified buying requests.'], ['4', 'Sell and track', 'Receive orders, accept them and update their status.']];
 export function Home() {
   const { user } = useAuth();
   return (
     <div>
-      <section className="rounded-2xl bg-gradient-to-br from-leaf-700 to-leaf-500 px-6 py-14 text-center text-white sm:px-12">
-        <h1 className="text-3xl font-extrabold sm:text-5xl">Sell your harvest to the world</h1>
-        <p className="mx-auto mt-4 max-w-2xl text-leaf-50">An AI-assisted marketplace connecting Indian farmers with national and international buyers, without middlemen.</p>
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
+      <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-leaf-900 via-leaf-700 to-leaf-500 px-6 py-16 text-white sm:px-12">
+        <div aria-hidden="true" className="pointer-events-none absolute -right-10 -top-10 text-[12rem] opacity-10">🌾</div>
+        <p className="mb-3 inline-block rounded-full bg-white/15 px-3 py-1 text-xs font-semibold tracking-wide">AI-POWERED · FARMER-FIRST · GLOBAL</p>
+        <h1 className="max-w-3xl text-3xl font-extrabold leading-tight sm:text-5xl">Sell your harvest to the world, without middlemen</h1>
+        <p className="mt-4 max-w-2xl text-leaf-50">AgriGlobal connects Indian farmers with national and international buyers, estimates market prices with machine learning, and points you to genuine, source-verified importers.</p>
+        <div className="mt-8 flex flex-wrap gap-3">
           <Link to="/marketplace" className="btn bg-white text-leaf-700 hover:bg-leaf-50">Browse crops</Link>
-          {!user && <Link to="/register" className="btn border border-white text-white hover:bg-white/10">Create account</Link>}
+          {user?.role === 'farmer' ? <Link to="/global-buyers" className="btn border border-white text-white hover:bg-white/10">Find global buyers</Link> : !user && <Link to="/register" className="btn border border-white text-white hover:bg-white/10">Create free account</Link>}
         </div>
       </section>
+      <section className="mt-10" aria-label="How it works"><h2 className="mb-4 text-xl font-bold text-leaf-900">How it works</h2>
+        <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{STEPS.map(([n, t, d]) => <li key={n} className="card"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-leaf-600 font-bold text-white">{n}</span><h3 className="mt-2 font-semibold">{t}</h3><p className="mt-1 text-sm text-stone-600">{d}</p></li>)}</ol></section>
       <section className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {FEATURES.map(([i, t, d]) => <div key={t} className="card"><div className="text-3xl">{i}</div><h3 className="mt-2 font-semibold">{t}</h3><p className="mt-1 text-sm text-stone-600">{d}</p></div>)}
+        {FEATURES.map(([i, t, d]) => <div key={t} className="card transition hover:-translate-y-0.5 hover:shadow-md"><div className="text-3xl">{i}</div><h3 className="mt-2 font-semibold">{t}</h3><p className="mt-1 text-sm text-stone-600">{d}</p></div>)}
       </section>
-      <p className="mt-8 text-center text-xs text-stone-500">Orders are enquiries and confirmations only. Payment and export arrangements happen outside this platform.</p>
+      <p className="mt-8 text-center text-xs text-stone-500">Orders are enquiries and confirmations only. Payment and export arrangements happen outside this platform. Company listings are not guarantees of purchase.</p>
     </div>
   );
 }

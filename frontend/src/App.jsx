@@ -7,7 +7,9 @@ import Dashboard from './pages/Dashboards.jsx';
 import { Marketplace, CropDetails, CropForm, MyCrops } from './pages/Market.jsx';
 import { Cart, OrderConfirmation, OrderList, OrderDetails } from './pages/Orders.jsx';
 import { PricePrediction, CropRecommendation } from './pages/AI.jsx';
-import { CompanyDirectory, CompanyDetails, BuyerFinder, Enquiry } from './pages/Companies.jsx';
+import { CompanyDirectory, CompanyDetails, BuyerFinder } from './pages/Companies.jsx';
+import { GlobalBuyers, GlobalBuyerDetails } from './pages/GlobalBuyers.jsx';
+import { Enquiry, EnquiryHistory } from './pages/Enquiries.jsx';
 import { ExportGuidance, CollectionCenters } from './pages/Reference.jsx';
 import { Notifications, Profile, Settings } from './pages/Account.jsx';
 const P = (roles, el) => <ProtectedRoute roles={roles}>{el}</ProtectedRoute>;
@@ -23,6 +25,7 @@ export default function App() {
       <Route path="/cart" element={P(['buyer'], <Cart />)} /><Route path="/order-confirmation" element={P(['buyer'], <OrderConfirmation />)} />
       <Route path="/orders" element={P(ANY, <OrderList />)} /><Route path="/orders/:id" element={P(ANY, <OrderDetails />)} />
       <Route path="/ai/price" element={P(['farmer'], <PricePrediction />)} /><Route path="/ai/recommend" element={P(['farmer'], <CropRecommendation />)} />
+      <Route path="/global-buyers" element={P(['farmer', 'admin'], <GlobalBuyers />)} /><Route path="/global-buyers/:id" element={P(['farmer', 'admin'], <GlobalBuyerDetails />)} /><Route path="/enquiries" element={P(['farmer'], <EnquiryHistory />)} />
       <Route path="/buyer-finder" element={P(['farmer'], <BuyerFinder />)} />
       <Route path="/exporters" element={P(ANY, <CompanyDirectory key="ex" type="indian_exporter" />)} /><Route path="/importers" element={P(ANY, <CompanyDirectory key="im" type="international_importer" />)} />
       <Route path="/companies/:id" element={P(ANY, <CompanyDetails />)} /><Route path="/enquiry/:companyId" element={P(['farmer'], <Enquiry />)} />

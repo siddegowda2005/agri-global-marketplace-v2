@@ -22,3 +22,17 @@ No feature below is marked Tested because the build sandbox had no network (cann
 | Tests | Backend Supertest suite, Pytest suite, frontend Vitest/RTL suite, Playwright specs (3 desktop + 1 mobile) | Written, NOT executed (except Python training logic smoke test) |
 | Map of crop locations | Crops store text location only (no coordinates) | Skipped |
 | Image crop identification, audit logs, Zod/React-Hook-Form | Optional / simplified (manual validation used) | Skipped |
+
+## V2 additions (code written; NOT executed here: no network)
+| Feature | Status |
+|---|---|
+| Global Buyers page: cards (logo/placeholder, flag, products, status, verification date, contacts) | Implemented |
+| Four card actions: details, official website, Contact Buyer panel, Send Enquiry | Implemented |
+| Search/filters: crop (partial, plural-tolerant), country, name, buyer type, status, category, pagination, clear | Implemented |
+| Active Buying Requests (verified + unexpired + re-checked within 30 days; honest empty message) | Implemented |
+| Find International Buyers button on crop listings (auto-applies crop filter) | Implemented |
+| Enquiry workflow with statuses, history, admin delivery tracking; never claims delivery | Implemented |
+| Admin: company evidence/verify/reject, duplicates, buying requests, enquiries | Implemented |
+| AI diagnostics, coverage/limitations display, data scripts, startup preload | Implemented |
+| Real company records | 9 unverified seed records from public listings; more research needed |
+| Phase 18+ (request was cut off after "COLLECTION...") | Not received |

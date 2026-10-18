@@ -13,3 +13,6 @@ Sandbox had no network: could not install dependencies, start MongoDB, run any N
 2. `npm run lint`, `npm run test:all`, `npm run build`; fix whatever fails (expect some first-run issues in untested JSX/tests) and paste errors back for debugging.
 3. Add datasets, train models, seed admin/guides, add real company data via admin UI.
 4. Run Playwright; deploy and test internationally.
+
+## V2 (2026-10-18)
+Implemented per docs/V2_UPGRADE.md. Still unverified by execution: all Node/React/pytest suites, build, Playwright. Python data-prep/training helpers were smoke-tested on synthetic data. Models remain untrained until you supply datasets.

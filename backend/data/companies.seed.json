@@ -1,0 +1,236 @@
+[
+  {
+    "_comment": "Seed records compiled from public listings found on 2026-10-18. Every record is UNVERIFIED: the sources are trade-fair/directory pages, not the companies' own sites. Only details shown on the cited page are included; websites/emails were not shown and are left blank. Product lists are the broad categories the source states, so a specific crop search (e.g. tomato) will not match unless the source named it. An admin must check each company's official site and verify it. No buying requests are included."
+  },
+  {
+    "type": "international_importer",
+    "name": "Berrymount Vegetables & Fruit Trading LLC",
+    "country": "UAE",
+    "city": "Dubai",
+    "buyerType": "importer",
+    "productsHandled": [
+      "fresh fruits",
+      "fresh vegetables"
+    ],
+    "productCategories": [
+      "fruits",
+      "vegetables"
+    ],
+    "sourceUrl": "https://www.gulfood.com/exhibitors/berrymount-vegetables-fruit-trading-llc",
+    "sources": [
+      {
+        "url": "https://www.gulfood.com/exhibitors/berrymount-vegetables-fruit-trading-llc",
+        "label": "Gulfood exhibitor listing"
+      }
+    ],
+    "address": "Shop#51, Wholesale building #2, Fruit & Vegetable Market, Ras Al Khor Industrial area 3, Dubai, UAE",
+    "businessCategory": "Importer, exporter and distributor of fresh fruits and vegetables"
+  },
+  {
+    "type": "international_importer",
+    "name": "Golden Gardens International FZE",
+    "country": "UAE",
+    "city": "Dubai",
+    "buyerType": "importer",
+    "productsHandled": [
+      "dried fruits",
+      "grains",
+      "legumes",
+      "spices",
+      "oilseeds"
+    ],
+    "productCategories": [
+      "grains",
+      "pulses",
+      "spices"
+    ],
+    "sourceUrl": "https://www.gulfood.com/exhibitors/golden-gardens-international-fze-1",
+    "sources": [
+      {
+        "url": "https://www.gulfood.com/exhibitors/golden-gardens-international-fze-1",
+        "label": "Gulfood exhibitor listing"
+      }
+    ],
+    "address": "Jebel Ali Freezone South, Plot No. S60303, Near Mineral Circles Bearing Street No. S1500, Dubai, UAE",
+    "businessCategory": "Food importer and exporter (agro-commodities)"
+  },
+  {
+    "type": "international_importer",
+    "name": "Mawasem Albaraka Vegetables & Fruits Trading",
+    "country": "UAE",
+    "city": "Dubai",
+    "buyerType": "importer",
+    "productsHandled": [
+      "food products"
+    ],
+    "productCategories": [
+      "vegetables",
+      "fruits"
+    ],
+    "sourceUrl": "https://www.gulfood.com/exhibitors/mawasem-albaraka-vegetables-fruits-trading",
+    "sources": [
+      {
+        "url": "https://www.gulfood.com/exhibitors/mawasem-albaraka-vegetables-fruits-trading",
+        "label": "Gulfood exhibitor listing"
+      }
+    ],
+    "address": "Deira - Naif, Dubai, UAE",
+    "businessCategory": "Importer and exporter of food products"
+  },
+  {
+    "type": "international_importer",
+    "name": "Flavorful Vegetables & Fruits Trading Co. LLC",
+    "country": "UAE",
+    "city": "Dubai",
+    "buyerType": "importer",
+    "productsHandled": [
+      "potato",
+      "mandarin",
+      "mango",
+      "apple"
+    ],
+    "productCategories": [
+      "vegetables",
+      "fruits"
+    ],
+    "sourceUrl": "https://bestfoodimporters.com/company/flavorful-vegetables-fruits-trading-co-llc/",
+    "sources": [
+      {
+        "url": "https://bestfoodimporters.com/company/flavorful-vegetables-fruits-trading-co-llc/",
+        "label": "Third-party directory (BestFoodImporters) - confirm on company site"
+      }
+    ],
+    "address": "Ras Al Khor 3, Dubai, UAE",
+    "businessCategory": "Importer and supplier of fresh fruits and vegetables"
+  },
+  {
+    "type": "international_importer",
+    "name": "Sunbeam International",
+    "country": "UAE",
+    "city": "Dubai",
+    "buyerType": "importer",
+    "productsHandled": [
+      "fruits",
+      "vegetables"
+    ],
+    "productCategories": [
+      "fruits",
+      "vegetables"
+    ],
+    "sourceUrl": "https://www.foodcodirectory.com/2022/03/sunbeam-international-uae.html",
+    "sources": [
+      {
+        "url": "https://www.foodcodirectory.com/2022/03/sunbeam-international-uae.html",
+        "label": "Third-party directory listing (FoodCoDirectory) - confirm on company site"
+      }
+    ],
+    "address": "Central Fruit & Vegetable Market, Al Aweer, Dubai, UAE",
+    "phone": "+971 4 320 2411",
+    "businessCategory": "Importer supplying malls, hotels, restaurants and retail shops"
+  },
+  {
+    "type": "international_importer",
+    "name": "Farzana Trading LLC",
+    "country": "UAE",
+    "city": "Dubai",
+    "buyerType": "distributor",
+    "productsHandled": [
+      "fresh fruits",
+      "fresh vegetables"
+    ],
+    "productCategories": [
+      "fruits",
+      "vegetables"
+    ],
+    "sourceUrl": "https://www.foodcodirectory.com/2021/09/farzana-trading-llc-dubai-uae.html",
+    "sources": [
+      {
+        "url": "https://www.foodcodirectory.com/2021/09/farzana-trading-llc-dubai-uae.html",
+        "label": "Third-party directory (FoodCoDirectory) - confirm on company site"
+      }
+    ],
+    "address": "Al Aweer Central Fruit and Vegetable Market, Wholesale Building No:3, Shop No: 89-90, Dubai, UAE",
+    "phone": "+971 4 320 0101",
+    "businessCategory": "Importer and distributor of fresh fruit and vegetables"
+  },
+  {
+    "type": "international_importer",
+    "name": "Ban Choon Marketing Pte Ltd",
+    "country": "Singapore",
+    "city": "Singapore",
+    "buyerType": "distributor",
+    "productsHandled": [
+      "fresh fruits",
+      "fresh vegetables",
+      "organic produce"
+    ],
+    "productCategories": [
+      "fruits",
+      "vegetables"
+    ],
+    "sourceUrl": "https://www.foodcodirectory.com/2020/12/ban-choon-marketing-pte-ltd-singapore.html",
+    "sources": [
+      {
+        "url": "https://www.foodcodirectory.com/2020/12/ban-choon-marketing-pte-ltd-singapore.html",
+        "label": "Third-party directory listing (FoodCoDirectory) - confirm on company site"
+      }
+    ],
+    "address": "30 Quality Road, Singapore 618803",
+    "phone": "+65 6777 7333",
+    "businessCategory": "Importer and distributor of fresh produce and groceries"
+  },
+  {
+    "type": "international_importer",
+    "name": "Hup Heng Fresh Produce",
+    "country": "Singapore",
+    "city": "Singapore",
+    "buyerType": "wholesaler",
+    "productsHandled": [
+      "fresh vegetables",
+      "fresh fruits"
+    ],
+    "productCategories": [
+      "vegetables",
+      "fruits"
+    ],
+    "sourceUrl": "https://www.foodcodirectory.com/2020/12/hup-heng-fresh-produce-singapore.html",
+    "sources": [
+      {
+        "url": "https://www.foodcodirectory.com/2020/12/hup-heng-fresh-produce-singapore.html",
+        "label": "Third-party directory listing (FoodCoDirectory) - confirm on company site"
+      }
+    ],
+    "address": "Pasir Panjang Wholesale Centre, Blk9 Stall 01-350-351, Singapore 110009",
+    "phone": "+65 9666 3177",
+    "businessCategory": "Importer, supplier and wholesaler of fresh vegetables and fruits"
+  },
+  {
+    "type": "international_importer",
+    "name": "Singapore Fruits Importers & Exporters Exchange Pte Ltd",
+    "country": "Singapore",
+    "city": "Singapore",
+    "buyerType": "importer",
+    "productsHandled": [
+      "apple",
+      "grape",
+      "pear",
+      "cherry",
+      "plum",
+      "onion",
+      "potato"
+    ],
+    "productCategories": [
+      "fruits",
+      "vegetables"
+    ],
+    "sourceUrl": "https://producemarketguide.com/index.php/company/112257/singapore-fruits-importers-exporters-exchange-pte-ltd",
+    "sources": [
+      {
+        "url": "https://producemarketguide.com/index.php/company/112257/singapore-fruits-importers-exporters-exchange-pte-ltd",
+        "label": "Third-party directory (Produce Market Guide, self-reported) - confirm on company site"
+      }
+    ],
+    "address": "Block 1 #2-17/18/19 Pasir Panjang Wholesale Centre, West Coast Highway, Singapore 110001",
+    "businessCategory": "Exporter, importer and wholesaler"
+  }
+]

@@ -11,6 +11,7 @@ import { orders, cart } from './routes/orders.js';
 import { companies, enquiries } from './routes/companies.js';
 import { notifications, currency, ai, admin } from './routes/misc.js';
 import { centers, guides } from './routes/reference.js';
+import { globalBuyers, buyingRequests } from './routes/globalBuyers.js';
 
 export function createApp() {
   const app = express();
@@ -35,6 +36,8 @@ export function createApp() {
   app.use('/api/currency', currency);
   app.use('/api/ai', ai);
   app.use('/api/admin', admin);
+  app.use('/api/global-buyers', globalBuyers);
+  app.use('/api/buying-requests', buyingRequests);
   app.use('/api/collection-centers', centers);
   app.use('/api/export-guides', guides);
   app.use(notFound);

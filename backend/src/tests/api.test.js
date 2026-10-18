@@ -193,7 +193,7 @@ describe('companies, matching, enquiries', () => {
     const created = await request(app).post('/api/companies').set(a.auth).send(co()); expect(created.status).toBe(201);
     expect((await request(app).get('/api/companies').set(f.auth)).body.items).toHaveLength(0);
     expect((await request(app).get(`/api/companies/${created.body.company._id}`).set(f.auth)).status).toBe(404);
-    const v = await request(app).post(`/api/companies/${created.body.company._id}/verify`).set(a.auth);
+    const v = await request(app).post(`/api/companies/${created.body.company._id}/verify`).set(a.auth).send({ evidence: 'Checked official website and contact page' });
     expect(v.body.company.lastVerifiedAt).toBeTruthy();
     const m = await request(app).get('/api/companies/match?crop=Tomato&country=UAE').set(f.auth);
     expect(m.body.items).toHaveLength(1); expect(m.body.items[0].score).toBe(100); expect(m.body.items[0].reasons[0]).toMatch(/publicly lists tomato/);
@@ -208,7 +208,7 @@ describe('companies, matching, enquiries', () => {
   it('enquiry creates a draft + mailto and never claims sending', async () => {
     const a = await admin(); const f = await signup('farmer');
     const c = (await request(app).post('/api/companies').set(a.auth).send(co())).body.company;
-    await request(app).post(`/api/companies/${c._id}/verify`).set(a.auth);
+    await request(app).post(`/api/companies/${c._id}/verify`).set(a.auth).send({ evidence: 'Checked official website and contact page' });
     const e = await request(app).post('/api/enquiries').set(f.auth).send({ companyId: c._id, cropName: 'Tomato', quantity: 2000, unit: 'kg', location: 'Mysuru, Karnataka, India' });
     expect(e.status).toBe(201); expect(e.body.mailto).toMatch(/^mailto:procurement@example.com\?subject=/); expect(e.body.notice).toMatch(/Draft only/);
     expect(e.body.enquiry.body).toContain('Tomato');

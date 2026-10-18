@@ -75,7 +75,7 @@ export function CropDetails() {
           {!user ? <Link to="/login" state={{ from: `/crops/${c._id}` }} className="btn-primary">Login to order</Link>
             : user.role === 'buyer' ? (<div className="flex flex-wrap items-end gap-3"><Field label={`Quantity (${c.unit})`} id="qty"><input id="qty" type="number" min="0" step="any" className="input w-32" value={qty} onChange={(e) => setQty(e.target.value)} /></Field>
               <button className="btn-primary mb-3" disabled={!qtyOk || busy} onClick={addToCart}>Add to cart</button>{!qtyOk && <p role="alert" className="mb-3 text-xs text-red-600">Enter 0 &lt; qty ≤ {c.quantity}</p>}</div>)
-              : user.role === 'farmer' && String(c.farmer?._id) === String(user._id) ? <Link to={`/farmer/crops/${c._id}/edit`} className="btn-outline">Edit listing</Link> : <p className="text-sm text-stone-500">Only buyers can order.</p>}
+              : user.role === 'farmer' && String(c.farmer?._id) === String(user._id) ? <div className="flex flex-wrap gap-2"><Link to={`/global-buyers?crop=${encodeURIComponent(c.name)}&cropId=${c._id}`} className="btn-primary">Find International Buyers</Link><Link to={`/farmer/crops/${c._id}/edit`} className="btn-outline">Edit listing</Link></div> : <p className="text-sm text-stone-500">Only buyers can order.</p>}
         </div>
       </div>
     </div>
@@ -139,9 +139,9 @@ export function MyCrops() {
   return (
     <div><PageHeader title="My crops"><Link to="/farmer/crops/new" className="btn-primary">+ Add crop</Link></PageHeader>
       {loading ? <Spinner /> : error ? <ErrorBox message={error} onRetry={reload} /> : !data.items.length ? <Empty title="No crops yet" hint="Add your first crop listing to start selling." /> : (
-        <div className="overflow-x-auto"><table className="w-full min-w-[600px] text-left text-sm"><thead className="border-b text-stone-500"><tr><th className="p-2">Crop</th><th>Qty</th><th>Price</th><th>Status</th><th></th></tr></thead>
+        <div className="overflow-x-auto"><table className="w-full min-w-[760px] text-left text-sm"><thead className="border-b text-stone-500"><tr><th className="p-2">Crop</th><th>Qty</th><th>Price</th><th>Status</th><th></th></tr></thead>
           <tbody>{data.items.map((c) => <tr key={c._id} className="border-b"><td className="p-2"><Link className="font-medium text-leaf-700" to={`/crops/${c._id}`}>{c.name}</Link><div className="text-xs text-stone-500">{c.location}</div></td><td>{c.quantity} {c.unit}</td><td>{format(c.priceInr).text}</td><td>{c.status}</td>
-            <td className="space-x-2 text-right"><Link className="btn-outline" to={`/farmer/crops/${c._id}/edit`}>Edit</Link><button className="btn-danger" onClick={() => del(c)}>Delete</button></td></tr>)}</tbody></table></div>)}
+            <td className="space-x-2 text-right"><Link className="btn-primary" to={`/global-buyers?crop=${encodeURIComponent(c.name)}&cropId=${c._id}`}>Find International Buyers</Link><Link className="btn-outline" to={`/farmer/crops/${c._id}/edit`}>Edit</Link><button className="btn-danger" onClick={() => del(c)}>Delete</button></td></tr>)}</tbody></table></div>)}
     </div>
   );
 }

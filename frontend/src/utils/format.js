@@ -21,3 +21,10 @@ export function haversineKm(a, b) {
 export const newKey = () => (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`);
 export const fmtDate = (d) => (d ? new Date(d).toLocaleString() : '-');
 export const safeUrl = (u) => (/^https?:\/\//i.test(u || '') ? u : null);
+
+const FLAGS = { UAE: '🇦🇪', 'Saudi Arabia': '🇸🇦', Singapore: '🇸🇬', UK: '🇬🇧', USA: '🇺🇸', Germany: '🇩🇪', Netherlands: '🇳🇱', France: '🇫🇷', India: '🇮🇳' };
+export const flag = (country) => FLAGS[country] || '🌐';
+export const NA = 'Not publicly available';
+export const BUYER_TYPES = ['importer', 'wholesaler', 'distributor', 'retailer', 'processor', 'other'];
+export const GLOBAL_COUNTRIES = ['UAE', 'Saudi Arabia', 'Singapore', 'UK', 'Germany', 'Netherlands', 'France', 'USA'];
+export const ENQUIRY_STATUS_LABEL = { draft: 'Draft', submitted: 'Submitted internally (not delivered)', delivery_attempted: 'Delivery attempted', delivered: 'Delivered (confirmed)', failed: 'Failed' };

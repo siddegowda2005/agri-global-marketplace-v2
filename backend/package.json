@@ -8,7 +8,8 @@
     "test": "vitest run",
     "lint": "node scripts/lint.mjs",
     "seed:admin": "node src/scripts-seed-admin.js",
-    "seed:guides": "node src/scripts-seed-guides.js"
+    "seed:guides": "node src/scripts-seed-guides.js",
+    "import:companies": "node src/scripts-import-companies.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
