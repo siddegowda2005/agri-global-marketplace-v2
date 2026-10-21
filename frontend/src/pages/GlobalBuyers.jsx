@@ -22,9 +22,10 @@ export function ContactPanel({ c }) {
   );
 }
 export function Logo({ c, size = 'h-12 w-12' }) {
-  const src = safeUrl(c.logoUrl);
-  return src ? <img src={src} alt={`${c.name} logo`} referrerPolicy="no-referrer" className={`${size} rounded-lg border border-stone-200 bg-white object-contain`} />
-    : <div aria-hidden="true" className={`${size} flex items-center justify-center rounded-lg bg-leaf-100 text-lg font-bold text-leaf-700`}>{c.name.slice(0, 1).toUpperCase()}</div>;
+  const src = safeUrl(c.logoUrl); const [broken, setBroken] = useState(false);
+  const fallback = <div aria-hidden="true" className={`${size} flex items-center justify-center rounded-lg bg-leaf-100 text-lg font-bold text-leaf-700`}>{c.name.slice(0, 1).toUpperCase()}</div>;
+  if (!src || broken) return fallback;
+  return <img src={src} alt={`${c.name} logo`} referrerPolicy="no-referrer" onError={() => setBroken(true)} className={`${size} rounded-lg border border-stone-200 bg-white object-contain`} />;
 }
 function BuyerCard({ c, crop, cropId }) {
   const [showContact, setShowContact] = useState(false); const { user } = useAuth(); const web = safeUrl(c.website);
@@ -61,7 +62,7 @@ function RequestCard({ r }) {
 }
 const Pager = ({ data, page, setPage }) => data.pages > 1 && <div className="mt-6 flex items-center justify-center gap-3"><button className="btn-outline" disabled={page <= 1} onClick={() => setPage(page - 1)}>Previous</button><span className="text-sm">Page {data.page} of {data.pages}</span><button className="btn-outline" disabled={page >= data.pages} onClick={() => setPage(page + 1)}>Next</button></div>;
 
-const EMPTY = { crop: '', country: '', q: '', buyerType: '', status: '', category: '' };
+const EMPTY = { crop: '', country: '', state: '', city: '', q: '', buyerType: '', status: '', category: '' };
 export function GlobalBuyers() {
   const [sp, setSp] = useSearchParams(); const tab = sp.get('tab') === 'requests' ? 'requests' : 'companies';
   const [form, setForm] = useState({ ...EMPTY, ...Object.fromEntries(Object.keys(EMPTY).map((k) => [k, sp.get(k) || ''])) });
@@ -86,6 +87,8 @@ export function GlobalBuyers() {
         <input aria-label="Crop" placeholder="Crop (e.g. tomato)" className="input lg:col-span-2" value={form.crop} onChange={set('crop')} />
         <select aria-label="Country" className="input" value={form.country} onChange={set('country')}><option value="">All countries</option>{GLOBAL_COUNTRIES.map((c) => <option key={c}>{c}</option>)}</select>
         {tab === 'companies' && <>
+          <input aria-label="State / region" placeholder="State / region" className="input" value={form.state} onChange={set('state')} />
+          <input aria-label="City / district" placeholder="City / district" className="input" value={form.city} onChange={set('city')} />
           <input aria-label="Company name" placeholder="Company name" className="input" value={form.q} onChange={set('q')} />
           <select aria-label="Buyer type" className="input" value={form.buyerType} onChange={set('buyerType')}><option value="">All buyer types</option>{BUYER_TYPES.map((b) => <option key={b} value={b}>{b}</option>)}</select>
           <select aria-label="Buying status" className="input" value={form.status} onChange={set('status')}><option value="">Any status</option><option value="currently_buying">Currently Buying</option><option value="potential">Potential Buyer</option></select>

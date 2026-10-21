@@ -1,0 +1,46 @@
+# Render blueprint: creates the backend API and the Python AI service on the free plan.
+# In Render: New > Blueprint > pick this repository. Values marked `sync: false`
+# are secrets/URLs you fill in the dashboard (see docs/deployment/README.md).
+services:
+  - type: web
+    name: agri-backend
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # MongoDB Atlas connection string. Never commit it.
+      - key: MONGODB_URI
+        sync: false
+      # Render generates a strong secret for you.
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      # Your deployed Vercel URL, e.g. https://agri-global.vercel.app
+      - key: CLIENT_ORIGIN
+        sync: false
+      # The deployed AI service URL, e.g. https://agri-ai.onrender.com
+      - key: AI_SERVICE_URL
+        sync: false
+      # Persist uploaded crop images in MongoDB (Render's disk is wiped on redeploy).
+      - key: UPLOAD_STORAGE
+        value: gridfs
+      - key: EXCHANGE_RATE_URL
+        value: https://open.er-api.com/v6/latest/INR
+
+  - type: web
+    name: agri-ai
+    runtime: python
+    plan: free
+    rootDir: ai-service
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.11

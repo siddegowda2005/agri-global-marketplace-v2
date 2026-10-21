@@ -25,4 +25,4 @@ export function requestState(r, now = new Date()) {
   if (!r.lastCheckedAt || r.lastCheckedAt < new Date(now.getTime() - STALE_DAYS * 86400000)) return 'stale';
   return 'active';
 }
-export const BuyingRequest = mongoose.model('BuyingRequest', schema);
+export const BuyingRequest = mongoose.models.BuyingRequest || mongoose.model('BuyingRequest', schema);

@@ -13,4 +13,4 @@ const schema = new mongoose.Schema({
   note: { type: String, default: 'Draft only. The platform does not send emails.' },
 }, { timestamps: true });
 schema.index({ status: 1, createdAt: -1 });
-export const Enquiry = mongoose.model('Enquiry', schema);
+export const Enquiry = mongoose.models.Enquiry || mongoose.model('Enquiry', schema);

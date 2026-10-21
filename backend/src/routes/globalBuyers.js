@@ -14,6 +14,7 @@ globalBuyers.use(authenticate);
 
 const qSchema = z.object({
   crop: z.string().trim().max(60).optional(), country: z.string().trim().max(60).optional(), q: z.string().trim().max(100).optional(),
+  state: z.string().trim().max(60).optional(), city: z.string().trim().max(60).optional(),
   buyerType: z.enum(['importer', 'wholesaler', 'distributor', 'retailer', 'processor', 'other']).optional(), category: z.string().trim().max(60).optional(),
   status: z.enum(['currently_buying', 'potential']).optional(),
   page: z.coerce.number().int().min(1).default(1), limit: z.coerce.number().int().min(1).max(50).default(12),
@@ -21,11 +22,13 @@ const qSchema = z.object({
 const reqCropFilter = (crop) => (crop ? { crop: new RegExp(esc(stem(crop))) } : {});
 
 globalBuyers.get('/', validate(qSchema, 'query'), asyncHandler(async (req, res) => {
-  const { crop, country, q, buyerType, category, status, page, limit } = req.query;
+  const { crop, country, q, state, city, buyerType, category, status, page, limit } = req.query;
   const now = new Date();
   const f = { type: 'international_importer', verificationStatus: 'verified' };
   if (crop) f.productsHandled = new RegExp(esc(stem(crop)));
   if (country) f.country = new RegExp(`^${esc(normCountry(country))}$`, 'i');
+  if (state) f.state = new RegExp(`^${esc(state)}$`, 'i');
+  if (city) f.city = new RegExp(`^${esc(city)}$`, 'i');
   if (q) f.name = new RegExp(esc(q), 'i');
   if (buyerType) f.buyerType = buyerType;
   if (category) f.productCategories = new RegExp(esc(category.toLowerCase()));

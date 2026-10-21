@@ -16,4 +16,4 @@ const orderSchema = new mongoose.Schema({
   idempotencyKey: { type: String, required: true },
 }, { timestamps: true });
 orderSchema.index({ buyer: 1, idempotencyKey: 1 }, { unique: true });
-export const Order = mongoose.model('Order', orderSchema);
+export const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);

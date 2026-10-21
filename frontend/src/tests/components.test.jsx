@@ -38,7 +38,7 @@ describe('Login', () => {
 describe('Register', () => {
   it('validates password rules', async () => {
     renderApp(<Register />); await userEvent.type(screen.getByLabelText('Full name'), 'Asha K'); await userEvent.type(screen.getByLabelText('Email'), 'a@b.co'); await userEvent.type(screen.getByLabelText('Password'), 'short');
-    await userEvent.click(screen.getByRole('button', { name: /register/i })); expect(await screen.findByText(/at least 8 characters/i)).toBeInTheDocument(); expect(api.post).not.toHaveBeenCalled();
+    await userEvent.click(screen.getByRole('button', { name: /register/i })); expect(await screen.findByRole('alert')).toHaveTextContent(/at least 8 characters/i); expect(api.post).not.toHaveBeenCalled();
   });
   it('sends role, country and the matching currency', async () => {
     mockApi({ '/currency/rates': RATES, 'POST /auth/register': { token: 't', user: user('buyer') } });

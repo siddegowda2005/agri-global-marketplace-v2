@@ -5,7 +5,7 @@ Required columns (case-insensitive, aliases accepted):
 Usage: python training/train_price.py datasets/price_data.csv
 Validation is time-aware: the most recent 20% of dates form the test set.
 """
-import sys
+import os, sys
 from pathlib import Path
 import numpy as np, pandas as pd
 from sklearn.compose import ColumnTransformer
@@ -45,7 +45,13 @@ def load_dataset(path) -> pd.DataFrame:
 
 def build_pipeline(seed=42):
     pre = ColumnTransformer([("cat", OneHotEncoder(handle_unknown="ignore"), CAT), ("num", "passthrough", NUM)])
-    return Pipeline([("pre", pre), ("rf", RandomForestRegressor(n_estimators=200, min_samples_leaf=2, n_jobs=-1, random_state=seed))])
+    # Bounded tree complexity keeps the artifact small enough for free hosting (GitHub rejects
+    # files over 100 MB and free instances have 512 MB RAM). An unbounded forest on ~66k rows
+    # produced a 223 MB / ~250 MB-in-RAM model. Override with TRAIN_N_ESTIMATORS / TRAIN_MIN_LEAF
+    # to trade size for accuracy.
+    n_estimators = int(os.environ.get("TRAIN_N_ESTIMATORS", 120))
+    min_leaf = int(os.environ.get("TRAIN_MIN_LEAF", 25))
+    return Pipeline([("pre", pre), ("rf", RandomForestRegressor(n_estimators=n_estimators, min_samples_leaf=min_leaf, n_jobs=-1, random_state=seed))])
 
 def train(csv_path, out_dir, test_fraction=0.2, min_rows=200):
     df = load_dataset(csv_path)

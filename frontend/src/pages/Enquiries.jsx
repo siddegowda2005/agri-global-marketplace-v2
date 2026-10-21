@@ -10,7 +10,7 @@ import { ENQUIRY_STATUS_LABEL, fmtDate } from '../utils/format.js';
 export function Enquiry() {
   const { companyId } = useParams(); const [sp] = useSearchParams(); const { toast } = useToast(); const { user } = useAuth();
   const company = useApi(`/companies/${companyId}`); const mine = useApi('/crops/mine');
-  const [f, setF] = useState({ cropName: sp.get('crop') || '', quantity: '', unit: 'kg', location: [user.city, user.state, 'India'].filter(Boolean).join(', '), expectedPriceInr: '', grade: '', message: '', contactPreference: 'any', cropId: sp.get('cropId') || '' });
+  const [f, setF] = useState({ cropName: sp.get('crop') || '', quantity: '', unit: 'kg', location: [user?.city, user?.state, 'India'].filter(Boolean).join(', '), expectedPriceInr: '', grade: '', message: '', contactPreference: 'any', cropId: sp.get('cropId') || '' });
   const [result, setResult] = useState(null); const [busy, setBusy] = useState(false); const [errs, setErrs] = useState({});
   const set = (k) => (e) => setF({ ...f, [k]: e.target.value });
   const fillFrom = (c) => setF((s) => ({ ...s, cropId: c._id, cropName: c.name, quantity: String(c.quantity), unit: c.unit, expectedPriceInr: String(c.priceInr), grade: c.grade && c.grade !== 'Ungraded' ? c.grade : '', location: [c.location, c.state, c.country].filter(Boolean).join(', ') }));

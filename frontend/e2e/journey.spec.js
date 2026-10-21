@@ -24,11 +24,13 @@ test.describe.serial('core journey', () => {
     await page.getByText(`Tomato${run}`).click(); await page.getByRole('button', { name: 'Add to cart' }).click(); await expect(page).toHaveURL(/cart/);
     await page.getByRole('button', { name: /place order/i }).click(); await expect(page.getByText('Order placed')).toBeVisible();
     const fp = await browser.newPage(); await fp.goto('/login'); await fp.getByLabel('Email').fill(farmerEmail); await fp.getByLabel('Password').fill(PASS); await fp.getByRole('button', { name: 'Login' }).click();
+    await expect(fp).toHaveURL(/dashboard/);
     await fp.goto('/orders'); await fp.getByText(`Tomato${run}`).first().click(); await fp.getByRole('button', { name: 'Accept' }).click(); await expect(fp.getByText('Accepted').first()).toBeVisible();
-    await page.goto('/orders'); await expect(page.getByText('Accepted')).toBeVisible();
+    await page.goto('/orders'); await expect(page.getByRole('link', { name: new RegExp(`Tomato${run}`) }).getByText('Accepted')).toBeVisible();
   });
   test('buyer is denied admin operations', async ({ page }) => {
     await page.goto('/login'); await page.getByLabel('Email').fill(buyerEmail); await page.getByLabel('Password').fill(PASS); await page.getByRole('button', { name: 'Login' }).click();
+    await expect(page).toHaveURL(/dashboard/);
     const status = await page.evaluate(async () => (await fetch('/api/admin/users', { headers: { Authorization: `Bearer ${localStorage.getItem('agri_token')}` } })).status); expect(status).toBe(403);
   });
 });

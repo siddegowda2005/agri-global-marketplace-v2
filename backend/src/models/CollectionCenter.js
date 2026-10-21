@@ -8,4 +8,4 @@ const schema = new mongoose.Schema({
   verificationStatus: { type: String, enum: ['unverified', 'verified'], default: 'unverified' },
 }, { timestamps: true });
 schema.index({ name: 1, latitude: 1, longitude: 1 }, { unique: true });
-export const CollectionCenter = mongoose.model('CollectionCenter', schema);
+export const CollectionCenter = mongoose.models.CollectionCenter || mongoose.model('CollectionCenter', schema);

@@ -6,4 +6,4 @@ const schema = new mongoose.Schema({
   link: String,
   read: { type: Boolean, default: false },
 }, { timestamps: true });
-export const Notification = mongoose.model('Notification', schema);
+export const Notification = mongoose.models.Notification || mongoose.model('Notification', schema);

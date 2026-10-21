@@ -7,4 +7,4 @@ const schema = new mongoose.Schema({
   order: { type: Number, default: 0 },
 }, { timestamps: true });
 schema.index({ title: 1 }, { unique: true });
-export const ExportGuide = mongoose.model('ExportGuide', schema);
+export const ExportGuide = mongoose.models.ExportGuide || mongoose.model('ExportGuide', schema);

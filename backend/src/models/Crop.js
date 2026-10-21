@@ -17,4 +17,4 @@ const cropSchema = new mongoose.Schema({
 }, { timestamps: true });
 cropSchema.index({ name: 'text', description: 'text' });
 cropSchema.index({ category: 1, status: 1, state: 1 });
-export const Crop = mongoose.model('Crop', cropSchema);
+export const Crop = mongoose.models.Crop || mongoose.model('Crop', cropSchema);

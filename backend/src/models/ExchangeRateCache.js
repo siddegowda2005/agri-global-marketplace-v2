@@ -4,4 +4,4 @@ const schema = new mongoose.Schema({
   rates: { type: Map, of: Number, required: true },
   fetchedAt: { type: Date, required: true },
 }, { timestamps: true });
-export const ExchangeRateCache = mongoose.model('ExchangeRateCache', schema);
+export const ExchangeRateCache = mongoose.models.ExchangeRateCache || mongoose.model('ExchangeRateCache', schema);

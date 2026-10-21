@@ -14,4 +14,4 @@ const userSchema = new mongoose.Schema({
 userSchema.methods.toSafe = function () {
   const o = this.toObject(); delete o.passwordHash; delete o.__v; return o;
 };
-export const User = mongoose.model('User', userSchema);
+export const User = mongoose.models.User || mongoose.model('User', userSchema);

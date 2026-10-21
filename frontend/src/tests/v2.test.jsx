@@ -27,7 +27,8 @@ describe('Global Buyers page', () => {
     page(<GlobalBuyers />, '/global-buyers?crop=tomato&cropId=c1');
     expect(await screen.findByText('Alpha Fresh Imports')).toBeInTheDocument();
     const call = api.get.mock.calls.find((c) => c[0] === '/global-buyers'); expect(call[1].params).toMatchObject({ crop: 'tomato' });
-    expect(screen.getByLabelText('Crop')).toHaveValue('tomato'); expect(screen.getByText('Potential Buyer')).toBeInTheDocument(); expect(screen.queryByText('Currently Buying')).toBeNull();
+    const card = screen.getByLabelText('Alpha Fresh Imports');
+    expect(screen.getByLabelText('Crop')).toHaveValue('tomato'); expect(within(card).getByText('Potential Buyer')).toBeInTheDocument(); expect(within(card).queryByText('Currently Buying')).toBeNull();
     await userEvent.click(screen.getByRole('button', { name: 'Contact Buyer' }));
     const panel = screen.getByLabelText(/contact details for alpha/i); expect(within(panel).getByRole('link', { name: 'buy@example.com' })).toHaveAttribute('href', 'mailto:buy@example.com');
     expect(within(panel).getAllByText('Not publicly available').length).toBeGreaterThanOrEqual(3);
@@ -95,8 +96,10 @@ describe('Enquiry history', () => {
   const items = [{ _id: 'e1', cropName: 'Tomato', quantity: 5, unit: 'kg', status: 'submitted', createdAt: '2026-10-10', company: { name: 'Alpha', country: 'UAE' }, history: [{ status: 'submitted', at: '2026-10-10', note: 'Submitted internally' }] }, { _id: 'e2', cropName: 'Onion', quantity: 9, unit: 'kg', status: 'draft', createdAt: '2026-10-11', company: { name: 'Beta', country: 'UK' }, history: [] }];
   it('shows honest status labels and only offers actions for drafts', async () => {
     mockApi({ ...farmerRoutes, '/enquiries': { items }, 'POST /enquiries/e2/submit': { enquiry: {} } });
-    renderApp(<EnquiryHistory />, { loggedInAs: 'farmer' }); expect(await screen.findByText('Submitted internally (not delivered)')).toBeInTheDocument();
-    expect(screen.getAllByRole('button', { name: 'Submit' })).toHaveLength(1); expect(screen.queryByText(/delivered \(confirmed\)/i)).toBeNull();
+    renderApp(<EnquiryHistory />, { loggedInAs: 'farmer' });
+    const row = await screen.findByLabelText('Enquiry Tomato');
+    expect(within(row).getByText('Submitted internally (not delivered)')).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: 'Submit' })).toHaveLength(1); expect(screen.getAllByLabelText(/^Enquiry /).every((el) => !/delivered \(confirmed\)/i.test(el.textContent))).toBe(true);
     await userEvent.click(screen.getByRole('button', { name: 'Submit' })); await waitFor(() => expect(api.post).toHaveBeenCalledWith('/enquiries/e2/submit'));
   });
   it('filters by status', async () => {

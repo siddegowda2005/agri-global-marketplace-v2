@@ -16,6 +16,8 @@ export function validate(schema, source = 'body') {
 export function notFound(_req, _res, next) { next(new ApiError(404, 'Route not found')); }
 // eslint-disable-next-line no-unused-vars
 export function errorHandler(err, _req, res, _next) {
+  if (err.type === 'entity.parse.failed') return res.status(400).json({ message: 'Invalid JSON in request body' });
+  if (err.type === 'entity.too.large') return res.status(413).json({ message: 'Request body is too large' });
   if (err.name === 'MulterError') return res.status(400).json({ message: `Upload error: ${err.message}` });
   if (err instanceof ApiError) return res.status(err.status).json({ message: err.message, details: err.details });
   if (err.code === 11000) return res.status(409).json({ message: 'Duplicate record' });

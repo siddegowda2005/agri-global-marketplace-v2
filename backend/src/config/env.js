@@ -7,5 +7,6 @@ export const env = {
   clientOrigin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
   aiUrl: process.env.AI_SERVICE_URL || 'http://127.0.0.1:8000',
   exchangeUrl: process.env.EXCHANGE_RATE_URL || 'https://open.er-api.com/v6/latest/INR',
+  uploadStorage: process.env.UPLOAD_STORAGE || '',
 };
 if (!env.jwtSecret) throw new Error('JWT_SECRET must be set in production');

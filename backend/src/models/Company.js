@@ -20,4 +20,4 @@ const companySchema = new mongoose.Schema({
 companySchema.index({ type: 1, country: 1, name: 1 }, { unique: true });
 companySchema.index({ productsHandled: 1 });
 companySchema.index({ verificationStatus: 1, type: 1, country: 1 });
-export const Company = mongoose.model('Company', companySchema);
+export const Company = mongoose.models.Company || mongoose.model('Company', companySchema);
